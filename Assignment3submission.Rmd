@@ -275,6 +275,7 @@ h_AMISE_hat <- function(n, sigma2_hat, theta22_hat, support_len = 1) {
 ```
 
 ```{r test(one run)}
+#test(one run)
 set.seed(517) 
 n <- 500
 df <- gen_data(n, alpha=2, beta=5, sigma2=1)
@@ -345,11 +346,11 @@ run_cell <- function(n, alpha, beta, reps = rep_each) {
   out_tbl <- purrr::map_dfr(1:reps, function(.r) {
     df <- gen_data(n, alpha, beta, sigma2 = 1)
     cp_tbl <- bind_rows(lapply(candidateN, Cp_of_N, y = df$y, x = df$x))
-    N_opt  <- cp_tbl$N[which.min(cp_tbl$Cp)]
+    N_opt <- cp_tbl$N[which.min(cp_tbl$Cp)]
 
-    fit  <- fit_by_block(df, N_opt)
+    fit <- fit_by_block(df, N_opt)
     th22 <- theta22_hat(fit$m2hat)
-    sg2  <- sigma2_hat(df$y, fit$mhat, df_used = 5*N_opt, n = n)
+    sg2 <- sigma2_hat(df$y, fit$mhat, df_used = 5*N_opt, n = n)
     hhat <- h_AMISE_hat(n, sg2, th22, 1)
 
     tibble(N_opt = N_opt, theta22 = th22, sigma2 = sg2, hhat = hhat)
